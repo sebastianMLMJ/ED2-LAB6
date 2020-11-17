@@ -56,7 +56,44 @@ namespace CifradoRSA
             return numeros;
         }
 
-        
+        public static int obtenerNumeroE(int N, int Phi)
+        {
+            List<int> factoresN = obtenerCoprimos(N);
+            List<int> factoresPhi = obtenerCoprimos(Phi);
+
+            List<int> coprimos = new List<int>();
+
+            foreach (var item in factoresPhi)
+            {
+                if (factoresN.Contains(item))
+                {
+                    coprimos.Add(item);
+                }
+            }
+
+            Random rnd = new Random();
+            double range = coprimos.Count / 2;
+            int e = coprimos[rnd.Next(0, Convert.ToInt16(Math.Truncate(range)))];
+
+            return e;
+        }
+
+        private static void eliminarMultiplos(int n, ref List<int> numeros)
+        {
+            List<int> remove = new List<int>();
+
+            foreach (var item in numeros)
+            {
+                if (item % n == 0)
+                {
+                    remove.Add(item);
+                }
+            }
+
+            numeros = numeros.Except(remove).ToList();
+        }
+
+
 
     }
 }
