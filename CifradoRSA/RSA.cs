@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.IO;
 using System.Text;
+using System.Numerics;
 
 namespace CifradoRSA
 {
@@ -8,7 +12,7 @@ namespace CifradoRSA
     {
         public static string GenerarLlaves(int P, int Q)
         {
-
+            Nprimos objeto = new Nprimos();
             #region variables
             //Declaracion de variables
             int n = P * Q;
@@ -19,7 +23,7 @@ namespace CifradoRSA
             int a;
             int contador = 0;
             int d = 1;
-            int e = NumerosPrimos.obtenerNumeroE(n, phi);
+            int e = objeto.obtenerNumeroE(n, phi);
             int e2 = e;
             #endregion
 
@@ -61,6 +65,32 @@ namespace CifradoRSA
 
             return $"{ee}-{dd}-{nn}";
         }
-    }
 
+
+        public static string CifradoRSA(int Key, int N, string Clave)
+        {
+            //    BigInteger Potencia = BigInteger.Pow(actual, power);
+            //    Mod = (Potencia % N);
+            var Public = Key;
+            var Private = 0;
+            var NN = N;
+            var ClaveCifrada = string.Empty;
+            foreach (var item in Clave)
+            {
+                ClaveCifrada += int.Parse(Convert.ToString(BigInteger.ModPow((int)item, Key, NN)));
+            }
+            return ClaveCifrada;
+        }
+
+        public static string DescifradoRSA(int Key, int N, string Clave)
+        {
+            int NN = N;
+            var ClaveDescifrada = string.Empty;
+            foreach (var item in Clave)
+            {
+                ClaveDescifrada += int.Parse(Convert.ToString(BigInteger.ModPow((int)item, Key, NN)));
+            }
+            return ClaveDescifrada;
+        }
+    }
 }

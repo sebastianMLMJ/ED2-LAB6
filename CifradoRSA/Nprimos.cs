@@ -56,7 +56,7 @@ namespace CifradoRSA
             return numeros;
         }
 
-        public static int obtenerNumeroE(int N, int Phi)
+        public int obtenerNumeroE(int N, int Phi)
         {
             List<int> factoresN = obtenerCoprimos(N);
             List<int> factoresPhi = obtenerCoprimos(Phi);
