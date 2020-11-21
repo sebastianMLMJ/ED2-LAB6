@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.IO;
 using System.Text;
 using System.Numerics;
+using System.IO;
 
 namespace CifradoRSA
 {
-    class RSA
+    public class RSAcipher
     {
+
+        public static string PathW { get; set; }
+
         public static string GenerarLlaves(int P, int Q)
         {
-            Nprimos objeto = new Nprimos();
+            
             #region variables
             //Declaracion de variables
             int n = P * Q;
@@ -23,7 +26,7 @@ namespace CifradoRSA
             int a;
             int contador = 0;
             int d = 1;
-            int e = objeto.obtenerNumeroE(n, phi);
+            int e = Nprimos.obtenerNumeroE(n, phi);
             int e2 = e;
             #endregion
 
@@ -82,15 +85,25 @@ namespace CifradoRSA
             return ClaveCifrada;
         }
 
-        public static string DescifradoRSA(int Key, int N, string Clave)
+        public static void DescifradoRSA(int Key, int N, string Nombre)
         {
-            int NN = N;
-            var ClaveDescifrada = string.Empty;
-            foreach (var item in Clave)
+            var NN = N;
+            var Cifrado = new FileStream(PathW, FileMode.Open);
+            var Reader = new StreamReader(Cifrado);
+            var NuevoNombre = $"{Path.GetDirectoryName(PathW)}\\{Nombre}.txt";
+            var Decifrado = new FileStream(NuevoNombre, FileMode.OpenOrCreate);
+            var Writer = new BinaryWriter(Decifrado);
+            var Line = Reader.ReadLine();
+            while (Line != null)
             {
-                ClaveDescifrada += int.Parse(Convert.ToString(BigInteger.ModPow((int)item, Key, NN)));
+                foreach (var item in Line)
+                {
+                    Writer.Write((char)int.Parse(Convert.ToString(BigInteger.ModPow((int)item, Key, NN))));
+                }
+                Line = Reader.ReadLine();
             }
-            return ClaveDescifrada;
+            Decifrado.Close();
+            Cifrado.Close();
         }
     }
 }

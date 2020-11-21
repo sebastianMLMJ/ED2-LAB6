@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
+
 
 namespace CifradoRSA
 {
-    class Nprimos
+    public class Nprimos
     {
         public static bool esNumeroPrimo(int n)
         {
@@ -52,11 +54,16 @@ namespace CifradoRSA
                 }
             }
 
-         
+            foreach (var item in factores)
+            {
+                eliminarMultiplos(item, ref numeros);
+            }
+
+
             return numeros;
         }
 
-        public int obtenerNumeroE(int N, int Phi)
+        public static int obtenerNumeroE(int N, int Phi)
         {
             List<int> factoresN = obtenerCoprimos(N);
             List<int> factoresPhi = obtenerCoprimos(Phi);
@@ -92,8 +99,5 @@ namespace CifradoRSA
 
             numeros = numeros.Except(remove).ToList();
         }
-
-
-
     }
 }
